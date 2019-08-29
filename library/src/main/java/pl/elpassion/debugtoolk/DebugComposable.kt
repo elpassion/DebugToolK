@@ -22,7 +22,10 @@ fun DebugComposable(any: Any?) {
             Column {
                 Text(text = "Hello from DebugComposable", style = +themeTextStyle { h3 })
                 Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-                    (any as? List<*>)?.forEach { AnyLog(it.toString()) }
+                    when(any) {
+                        is List<*> -> any.forEach { AnyLog(it.toString()) }
+                        else -> AnyLog(any)
+                    }
                 }
             }
         }
@@ -30,7 +33,7 @@ fun DebugComposable(any: Any?) {
 }
 
 @Composable
-private fun AnyLog(text: String) {
+private fun AnyLog(any: Any?) {
     Padding(Dp(4f)) {
         Align(Alignment.TopLeft) {
             Draw { canvas, parentSize ->
@@ -39,7 +42,7 @@ private fun AnyLog(text: String) {
             }
             Padding(Dp(4f)) {
                 Text(
-                    text,
+                    any.toString(),
                     style = TextStyle(color = Color.White)
                 )
             }
