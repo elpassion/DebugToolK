@@ -5,14 +5,18 @@ package pl.elpassion.debugtoolk
 import androidx.compose.Composable
 import androidx.compose.unaryPlus
 import androidx.ui.core.Dp
-import androidx.ui.core.Draw
 import androidx.ui.core.Text
-import androidx.ui.core.toRect
+import androidx.ui.foundation.shape.DrawShape
+import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
-import androidx.ui.layout.*
+import androidx.ui.layout.Align
+import androidx.ui.layout.Alignment
+import androidx.ui.layout.Column
+import androidx.ui.layout.CrossAxisAlignment
+import androidx.ui.layout.Padding
+import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
-import androidx.ui.painting.Paint
 import androidx.ui.text.TextStyle
 
 @Composable
@@ -22,7 +26,7 @@ fun DebugComposable(any: Any?) {
             Column {
                 Text(text = "Hello from DebugComposable", style = +themeTextStyle { h3 })
                 Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-                    when(any) {
+                    when (any) {
                         is List<*> -> any.forEach { AnyLog(it.toString()) }
                         else -> AnyLog(any)
                     }
@@ -36,10 +40,7 @@ fun DebugComposable(any: Any?) {
 private fun AnyLog(any: Any?) {
     Padding(Dp(4f)) {
         Align(Alignment.TopLeft) {
-            Draw { canvas, parentSize ->
-                val paint = Paint().apply { this.color = Color.DarkGray }
-                canvas.drawRect(parentSize.toRect(), paint)
-            }
+            DrawShape(RectangleShape, Color.DarkGray)
             Padding(Dp(4f)) {
                 Text(
                     any.toString(),
