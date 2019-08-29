@@ -4,8 +4,8 @@ package pl.elpassion.debugtoolk
 
 import androidx.compose.Composable
 import androidx.compose.unaryPlus
-import androidx.ui.core.Dp
 import androidx.ui.core.Text
+import androidx.ui.core.dp
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
@@ -38,10 +38,10 @@ fun DebugComposable(any: Any?) {
 
 @Composable
 private fun AnyLog(any: Any?) {
-    Padding(Dp(4f)) {
+    Padding(4.dp) {
         Align(Alignment.TopLeft) {
             DrawShape(RectangleShape, Color.DarkGray)
-            Padding(Dp(4f)) {
+            Padding(4.dp) {
                 Text(
                     any.toString(),
                     style = TextStyle(color = Color.White)
