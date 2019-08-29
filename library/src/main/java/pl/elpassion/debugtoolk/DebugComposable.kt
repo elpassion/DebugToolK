@@ -24,12 +24,9 @@ fun DebugComposable(any: Any?) {
     MaterialTheme {
         VerticalScroller {
             Column {
-                Text(text = "Hello from DebugComposable", style = +themeTextStyle { h3 })
+                Text(text = "Hello from DebugComposable", style = +themeTextStyle { h5 })
                 Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-                    when (any) {
-                        is List<*> -> any.forEach { AnyLog(it.toString()) }
-                        else -> AnyLog(any)
-                    }
+                    AnyLog(any)
                 }
             }
         }
@@ -42,10 +39,22 @@ private fun AnyLog(any: Any?) {
         Align(Alignment.TopLeft) {
             DrawShape(RectangleShape, Color.DarkGray)
             Padding(4.dp) {
-                Text(
-                    any.toString(),
-                    style = TextStyle(color = Color.White)
-                )
+                when (any) {
+                    is List<*> -> {
+                        Column(crossAxisAlignment = CrossAxisAlignment.Start) {
+                            Text(
+                                any.toString(),
+                                style = TextStyle(color = Color.White),
+                                maxLines = 1
+                            )
+                            any.forEach(::AnyLog)
+                        }
+                    }
+                    else -> Text(
+                        any.toString(),
+                        style = TextStyle(color = Color.White)
+                    )
+                }
             }
         }
     }
