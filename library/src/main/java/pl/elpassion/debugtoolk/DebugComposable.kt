@@ -9,12 +9,7 @@ import androidx.ui.core.dp
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
-import androidx.ui.layout.Alignment
-import androidx.ui.layout.Column
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.Padding
-import androidx.ui.layout.VerticalScroller
+import androidx.ui.layout.*
 import androidx.ui.material.MaterialColors
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeColor
@@ -40,26 +35,30 @@ fun DebugComposable(any: Any?) {
 
 @Composable
 private fun AnyLog(any: Any?) {
+    println("dtk $any")
     Padding(4.dp) {
         Align(Alignment.TopLeft) {
             DrawShape(RectangleShape, +themeColor { background })
             Padding(4.dp) {
                 when (any) {
                     null -> Text("null")
-                    is List<*> -> Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-                        Text(
-                            any.toString(),
-                            style = +themeTextStyle { body2 },
-                            maxLines = 2
-                        )
-                        any.forEach(::AnyLog)
-                    }
+                    is List<*> -> ListLog(any)
+                    is Number -> Text("number: $any")
                     else -> {
-                        val properties = any::class.memberProperties as List<KProperty1<Any, *>>
-                        properties.map { it.get(any) }.filterIsInstance<List<*>>().forEach(::AnyLog)
+                        Text("somethig else")
+                        val properties = any::class.memberProperties
+                        AnyLog(properties.map { it.get(any) })
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ListLog(list: Iterable<*>) = Padding(4.dp) {
+    Column(crossAxisAlignment = CrossAxisAlignment.Start) {
+        Text("list")
+        list.forEach(::AnyLog)
     }
 }
