@@ -1,3 +1,23 @@
+[![](https://jitpack.io/v/elpassion/DebugToolK.svg)](https://jitpack.io/#elpassion/DebugToolK)
+
+### Building with JitPack
+```gradle
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+   
+    dependencies {
+        testImplementation 'com.github.elpassion:DebugToolK:master-SNAPSHOT'
+    }
+```
+
+details: https://jitpack.io/#elpassion/DebugToolK
+
+
+
+
+# TODO: rewrite README file
+
 # Try Jetpack Compose now!
 
 This repository was made to provide a quick dive into what Jetpack Compose feels like. No need to checkout and AOSP and build everything by yourself, main job is done for you.
