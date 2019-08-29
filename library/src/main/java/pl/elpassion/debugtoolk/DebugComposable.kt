@@ -2,6 +2,7 @@
 
 package pl.elpassion.debugtoolk
 
+import androidx.compose.Children
 import androidx.compose.Composable
 import androidx.compose.state
 import androidx.compose.unaryPlus
@@ -14,12 +15,7 @@ import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
-import androidx.ui.layout.Alignment
-import androidx.ui.layout.Column
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.Padding
-import androidx.ui.layout.VerticalScroller
+import androidx.ui.layout.*
 import androidx.ui.material.MaterialColors
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
@@ -44,6 +40,23 @@ fun DebugComposable(any: Any?) {
 @Composable
 private fun AnyLog(any: Any?, depth: Int = 0) {
     println("dtk $any")
+    when (any) {
+        null -> TextLog("null")
+        is List<*> -> CollectionLog(any, depth)
+        is Number -> TextLog("number: $any")
+        is String -> TextLog("string: $any")
+        else -> {
+            val properties = any::class.declaredMemberProperties
+            AnyLog(properties.map { it.getter.call(any) }, depth)
+        }
+    }
+}
+
+@Composable
+private fun NiceBorder(
+    depth: Int,
+    @Children children: @Composable() () -> Unit
+) {
     Align(Alignment.TopLeft) {
         val lightness = (0.6f + depth * 0.03f) % 1f
         val color = Color(ColorUtils.HSLToColor(floatArrayOf(190f, 0.6f, lightness)))
@@ -51,16 +64,7 @@ private fun AnyLog(any: Any?, depth: Int = 0) {
         DrawShape(RectangleShape, color)
         DrawBorder(RectangleShape, Border(borderColor, 0.5.dp))
         Padding(left = 4.dp, top = 4.dp, bottom = 4.dp) {
-            when (any) {
-                null -> TextLog("null")
-                is List<*> -> CollectionLog(any, depth + 1)
-                is Number -> TextLog("number: $any")
-                is String -> TextLog("string: $any")
-                else -> {
-                    val properties = any::class.declaredMemberProperties
-                    AnyLog(properties.map { it.getter.call(any) }, depth)
-                }
-            }
+            children()
         }
     }
 }
@@ -68,11 +72,13 @@ private fun AnyLog(any: Any?, depth: Int = 0) {
 @Composable
 private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left = 4.dp) {
     val isActive = +state { false }
-    Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-        Clickable(onClick = { isActive.value = !isActive.value }) {
-            TextLog("collection (size: ${collection.size})")
-            if (isActive.value) {
-                collection.forEach { any -> AnyLog(any, depth) }
+    NiceBorder(depth) {
+        Column(crossAxisAlignment = CrossAxisAlignment.Start) {
+            Clickable(onClick = { isActive.value = !isActive.value }) {
+                TextLog("collection (size: ${collection.size})")
+                if (isActive.value) {
+                    collection.forEach { any -> AnyLog(any, depth + 1) }
+                }
             }
         }
     }
