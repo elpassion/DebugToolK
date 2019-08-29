@@ -14,8 +14,7 @@ import androidx.ui.material.MaterialColors
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeColor
 import androidx.ui.material.themeTextStyle
-import kotlin.reflect.KProperty1
-import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
 fun DebugComposable(any: Any?) {
@@ -42,12 +41,12 @@ private fun AnyLog(any: Any?) {
             Padding(4.dp) {
                 when (any) {
                     null -> Text("null")
-                    is List<*> -> ListLog(any)
+                    is List<*> -> CollectionLog(any)
                     is Number -> Text("number: $any")
+                    is String -> Text("string: $any")
                     else -> {
-                        Text("somethig else")
-                        val properties = any::class.memberProperties
-                        AnyLog(properties.map { it.get(any) })
+                        val properties = any::class.declaredMemberProperties
+                        AnyLog(properties.map { it.getter.call(any) })
                     }
                 }
             }
@@ -56,9 +55,9 @@ private fun AnyLog(any: Any?) {
 }
 
 @Composable
-private fun ListLog(list: Iterable<*>) = Padding(4.dp) {
+private fun CollectionLog(collection: Collection<*>) = Padding(4.dp) {
     Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-        Text("list")
-        list.forEach(::AnyLog)
+        Text("collection (size: ${collection.size})")
+        collection.forEach(::AnyLog)
     }
 }
