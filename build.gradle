@@ -27,7 +27,9 @@ allprojects {
         mavenLocal()
         google()
         jcenter()
-        
+        maven { url "$androidx_home/out/ui/build/support_repo/" }
+        maven { url "$androidx_home/prebuilts/androidx/external/" }
+        maven { url "https://jitpack.io" }
     }
 }
 
