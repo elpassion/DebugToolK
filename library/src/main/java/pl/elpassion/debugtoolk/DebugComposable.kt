@@ -3,10 +3,12 @@
 package pl.elpassion.debugtoolk
 
 import androidx.compose.Composable
+import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.core.graphics.ColorUtils
 import androidx.ui.core.Text
 import androidx.ui.core.dp
+import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
@@ -65,9 +67,14 @@ private fun AnyLog(any: Any?, depth: Int = 0) {
 
 @Composable
 private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left = 4.dp) {
+    val isActive = +state { false }
     Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-        TextLog("collection (size: ${collection.size})")
-        collection.forEach { any -> AnyLog(any, depth) }
+        Clickable(onClick = { isActive.value = !isActive.value }) {
+            TextLog("collection (size: ${collection.size})")
+            if (isActive.value) {
+                collection.forEach { any -> AnyLog(any, depth) }
+            }
+        }
     }
 }
 
