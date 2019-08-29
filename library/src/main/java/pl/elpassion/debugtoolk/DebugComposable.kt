@@ -9,7 +9,12 @@ import androidx.ui.core.dp
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
-import androidx.ui.layout.*
+import androidx.ui.layout.Align
+import androidx.ui.layout.Alignment
+import androidx.ui.layout.Column
+import androidx.ui.layout.CrossAxisAlignment
+import androidx.ui.layout.Padding
+import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialColors
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeColor
@@ -35,29 +40,31 @@ fun DebugComposable(any: Any?) {
 @Composable
 private fun AnyLog(any: Any?) {
     println("dtk $any")
-    Padding(4.dp) {
-        Align(Alignment.TopLeft) {
-            DrawShape(RectangleShape, +themeColor { background })
-            Padding(4.dp) {
-                when (any) {
-                    null -> Text("null")
-                    is List<*> -> CollectionLog(any)
-                    is Number -> Text("number: $any")
-                    is String -> Text("string: $any")
-                    else -> {
-                        val properties = any::class.declaredMemberProperties
-                        AnyLog(properties.map { it.getter.call(any) })
-                    }
-                }
+    Align(Alignment.TopLeft) {
+        DrawShape(RectangleShape, +themeColor { background })
+        when (any) {
+            null -> TextLog("null")
+            is List<*> -> CollectionLog(any)
+            is Number -> TextLog("number: $any")
+            is String -> TextLog("string: $any")
+            else -> {
+                val properties = any::class.declaredMemberProperties
+                AnyLog(properties.map { it.getter.call(any) })
             }
         }
     }
 }
 
 @Composable
-private fun CollectionLog(collection: Collection<*>) = Padding(4.dp) {
+private fun CollectionLog(collection: Collection<*>) = Padding(left = 4.dp) {
     Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-        Text("collection (size: ${collection.size})")
+        TextLog("collection (size: ${collection.size})")
         collection.forEach(::AnyLog)
     }
 }
+
+@Composable
+private fun TextLog(text: String) = Text(
+    text = text,
+    style = +themeTextStyle { body2 }
+)
