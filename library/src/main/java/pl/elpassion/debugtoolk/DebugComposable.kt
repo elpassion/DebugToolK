@@ -3,25 +3,28 @@
 package pl.elpassion.debugtoolk
 
 import androidx.compose.Composable
+import androidx.compose.unaryPlus
 import androidx.ui.core.Dp
 import androidx.ui.core.Draw
 import androidx.ui.core.Text
 import androidx.ui.core.toRect
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
-import androidx.ui.layout.Alignment
-import androidx.ui.layout.Column
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.Padding
-import androidx.ui.layout.VerticalScroller
+import androidx.ui.layout.*
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.themeTextStyle
 import androidx.ui.painting.Paint
 import androidx.ui.text.TextStyle
 
 @Composable
 fun DebugComposable(any: Any?) {
-    VerticalScroller {
-        Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-            (any as? List<*>)?.forEach { AnyLog(it.toString()) }
+    MaterialTheme {
+        VerticalScroller {
+            Column {
+                Text(text = "Hello from DebugComposable", style = +themeTextStyle { h3 })
+                Column(crossAxisAlignment = CrossAxisAlignment.Start) {
+                    (any as? List<*>)?.forEach { AnyLog(it.toString()) }
+                }
+            }
         }
     }
 }
