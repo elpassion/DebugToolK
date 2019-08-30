@@ -38,14 +38,11 @@ fun DebugComposable(context: Context, any: Any?) = Dialog(onCloseRequest = {}) {
         VerticalScroller {
             Padding(8.dp) {
                 Column {
-                    Row(mainAxisAlignment = MainAxisAlignment.Center) {
-                        SimpleImage(imageFromResource(context.resources, R.drawable.ic_dev))
-                        Text(text = "DebugToolK", style = +themeTextStyle { h6 })
-                    }
-                    HeightSpacer(4.dp)
-                    Text(text = "Log", style = +themeTextStyle { subtitle2 })
-                    HeightSpacer(4.dp)
-                    AnyLog(any)
+                    Header(context)
+                    Divider()
+                    MemoryInfoContainer()
+                    Divider()
+                    LogContainer(any)
                 }
             }
         }
@@ -53,12 +50,36 @@ fun DebugComposable(context: Context, any: Any?) = Dialog(onCloseRequest = {}) {
 }
 
 @Composable
+private fun Header(context: Context) = Row(mainAxisAlignment = MainAxisAlignment.Center) {
+    SimpleImage(imageFromResource(context.resources, R.drawable.ic_dev))
+    Text(text = "DebugToolK", style = +themeTextStyle { h6 })
+}
+
+@Composable
+private fun MemoryInfoContainer() {
+    Section(text = "Memory Info")
+    Divider()
+    Align(Alignment.TopLeft) {
+        Padding(4.dp) {
+            BodyText("Memory usage:")
+        }
+    }
+}
+
+@Composable
+private fun LogContainer(any: Any?) {
+    Section(text = "Log")
+    Divider()
+    AnyLog(any)
+}
+
+@Composable
 private fun AnyLog(any: Any?, depth: Int = 0) {
     when (any) {
-        null -> TextLog("null")
+        null -> BodyText("null")
         is List<*> -> CollectionLog(any, depth)
-        is Number -> TextLog("number: $any")
-        is String -> TextLog("string: $any")
+        is Number -> BodyText("number: $any")
+        is String -> BodyText("string: $any")
         else -> {
             val properties = any::class.declaredMemberProperties
             AnyLog(properties.map { it.getter.call(any) }, depth)
@@ -85,7 +106,7 @@ private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left 
     NiceBorder(depth) {
         Column(crossAxisAlignment = CrossAxisAlignment.Start) {
             Clickable(onClick = { expand.value = !expand.value }) {
-                TextLog("collection (size: ${collection.size})")
+                BodyText("collection (size: ${collection.size})")
                 if (expand.value) {
                     collection.forEach { any -> AnyLog(any, depth + 1) }
                 }
@@ -95,7 +116,16 @@ private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left 
 }
 
 @Composable
-private fun TextLog(text: String) = Text(
+private fun Section(text: String) = Text(
+    text = text,
+    style = +themeTextStyle { subtitle2 }
+)
+
+@Composable
+private fun BodyText(text: String) = Text(
     text = text,
     style = +themeTextStyle { body2 }
 )
+
+@Composable
+private fun Divider() = HeightSpacer(4.dp)
