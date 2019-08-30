@@ -19,22 +19,25 @@ fun NetworkContainer(context: Context) {
     val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val coroutineContext = +ambient(CoroutineContextAmbient)
 
-    fun isConnected() = cm.activeNetworkInfo?.isConnected ?: false
+    fun getStatus() = cm.activeNetworkInfo?.detailedState?.name ?: "DISCONNECTED"
+    fun getType() = cm.activeNetworkInfo?.typeName.orEmpty()
 
-    val isConnected = +state { isConnected() }
+    val status = +state { getStatus() }
+    val type = +state { getType() }
 
     delay(Duration(seconds = 1), coroutineContext) {
-        isConnected.value = isConnected()
+        status.value = getStatus()
+        type.value = getType()
     }
 
     Section(text = "Network")
     Divider()
-    NetworkBody(isConnected.value)
+    NetworkBody(status.value, type.value)
 }
 
 @Composable
-private fun NetworkBody(isConnected: Boolean) {
+private fun NetworkBody(status: String, info: String) {
     Align(Alignment.TopLeft) {
-        BodyText("Status: ${if (isConnected) "Connected" else "Disconnected"}")
+        BodyText("Status: $status\nType: $info")
     }
 }
