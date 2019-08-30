@@ -36,7 +36,7 @@ fun DebugToolK(
                     Divider()
                     MemoryInfoContainer(context)
                     Divider()
-                    StorageContainer()
+                    StorageContainer(context)
                     Divider()
                     NetworkContainer(context)
                     Divider()

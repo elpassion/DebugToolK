@@ -3,6 +3,7 @@
 package pl.elpassion.debugtoolk
 
 import android.content.Context
+import android.text.format.Formatter
 import androidx.compose.Composable
 import androidx.compose.unaryPlus
 import androidx.ui.core.Text
@@ -40,3 +41,6 @@ fun SmallText(text: String) = Text(
 
 @Composable
 fun Divider() = HeightSpacer(4.dp)
+
+fun Long.bytesFormatted(context: Context): String =
+    Formatter.formatShortFileSize(context, this)

@@ -3,7 +3,6 @@
 package pl.elpassion.debugtoolk
 
 import android.content.Context
-import android.text.format.Formatter
 import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.state
@@ -48,6 +47,3 @@ private fun getUsedMemory(context: Context) =
 
 private fun getFreeMemory(context: Context) =
     runtime.freeMemory().bytesFormatted(context)
-
-private fun Long.bytesFormatted(context: Context) =
-    Formatter.formatShortFileSize(context, this)

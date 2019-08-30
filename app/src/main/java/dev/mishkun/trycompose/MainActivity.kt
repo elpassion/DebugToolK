@@ -15,6 +15,8 @@ import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
 import pl.elpassion.debugtoolk.DebugToolK
+import java.io.File
+import java.util.UUID
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -54,7 +56,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addCache() {
-        cacheDir.createNewFile()
+        File(cacheDir, UUID.randomUUID().toString()).apply {
+            createNewFile()
+            writeBytes(ByteArray(Random.nextInt(10)) { 1 })
+        }
     }
 
 }
