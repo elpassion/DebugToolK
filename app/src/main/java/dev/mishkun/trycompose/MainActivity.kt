@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                             text = "Hello from MainActivity",
                             style = +themeTextStyle { h4 })
                     }
-                    DebugToolK(this).Dialog(getLog())
+                    DebugToolK(this, getLog())
                 }
             }
         }
