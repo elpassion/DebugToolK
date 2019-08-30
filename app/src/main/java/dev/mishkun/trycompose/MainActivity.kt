@@ -11,7 +11,7 @@ import androidx.ui.layout.Column
 import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
-import pl.elpassion.debugtoolk.DebugComposable
+import pl.elpassion.debugtoolk.DebugToolK
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                             text = "Hello from MainActivity",
                             style = +themeTextStyle { h4 })
                     }
-                    DebugComposable(this, getLog())
+                    DebugToolK(this).Dialog(getLog())
                 }
             }
         }

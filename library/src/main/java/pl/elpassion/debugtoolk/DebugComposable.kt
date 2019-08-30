@@ -33,16 +33,20 @@ import androidx.ui.painting.imageFromResource
 import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
-fun DebugComposable(context: Context, any: Any?) = Dialog(onCloseRequest = {}) {
+fun DebugComposable(
+    context: Context,
+    memoryInfo: MemoryInfo,
+    log: Any?
+) = Dialog(onCloseRequest = {}) {
     MaterialTheme {
         VerticalScroller {
             Padding(8.dp) {
                 Column {
                     Header(context)
                     Divider()
-                    MemoryInfoContainer()
+                    MemoryInfoContainer(memoryInfo)
                     Divider()
-                    LogContainer(any)
+                    LogContainer(log)
                 }
             }
         }
@@ -56,12 +60,12 @@ private fun Header(context: Context) = Row(mainAxisAlignment = MainAxisAlignment
 }
 
 @Composable
-private fun MemoryInfoContainer() {
+private fun MemoryInfoContainer(memoryInfo: MemoryInfo) {
     Section(text = "Memory Info")
     Divider()
     Align(Alignment.TopLeft) {
         Padding(4.dp) {
-            BodyText("Memory usage:")
+            BodyText("Used: ${memoryInfo.used}\nFree: ${memoryInfo.free}")
         }
     }
 }
