@@ -10,26 +10,33 @@ import androidx.core.graphics.ColorUtils
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
+import androidx.ui.foundation.Dialog
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialColors
+import androidx.ui.layout.Align
+import androidx.ui.layout.Alignment
+import androidx.ui.layout.Column
+import androidx.ui.layout.CrossAxisAlignment
+import androidx.ui.layout.HeightSpacer
+import androidx.ui.layout.Padding
+import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
 import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
-fun DebugComposable(any: Any?) {
-    MaterialTheme(
-        colors = MaterialColors(background = Color(0xFFCFD8DC.toInt()))
-    ) {
+fun DebugComposable(any: Any?) = Dialog(onCloseRequest = {}) {
+    MaterialTheme {
         VerticalScroller {
-            Column {
-                Text(text = "Hello from DebugComposable", style = +themeTextStyle { h5 })
-                Column(crossAxisAlignment = CrossAxisAlignment.Start) {
+            Padding(8.dp) {
+                Column {
+                    Text(text = "DebugToolK", style = +themeTextStyle { h6 })
+                    HeightSpacer(4.dp)
+                    Text(text = "Log", style = +themeTextStyle { subtitle2 })
+                    HeightSpacer(4.dp)
                     AnyLog(any)
                 }
             }
@@ -53,10 +60,7 @@ private fun AnyLog(any: Any?, depth: Int = 0) {
 }
 
 @Composable
-private fun NiceBorder(
-    depth: Int,
-    @Children children: @Composable() () -> Unit
-) {
+private fun NiceBorder(depth: Int, @Children children: @Composable() () -> Unit) =
     Align(Alignment.TopLeft) {
         val lightness = (0.6f + depth * 0.03f) % 1f
         val color = Color(ColorUtils.HSLToColor(floatArrayOf(190f, 0.6f, lightness)))
@@ -67,16 +71,15 @@ private fun NiceBorder(
             children()
         }
     }
-}
 
 @Composable
 private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left = 4.dp) {
-    val isActive = +state { false }
+    val expand = +state { false }
     NiceBorder(depth) {
         Column(crossAxisAlignment = CrossAxisAlignment.Start) {
-            Clickable(onClick = { isActive.value = !isActive.value }) {
+            Clickable(onClick = { expand.value = !expand.value }) {
                 TextLog("collection (size: ${collection.size})")
-                if (isActive.value) {
+                if (expand.value) {
                     collection.forEach { any -> AnyLog(any, depth + 1) }
                 }
             }
