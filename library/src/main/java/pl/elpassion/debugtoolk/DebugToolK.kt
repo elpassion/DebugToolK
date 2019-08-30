@@ -14,13 +14,12 @@ class DebugToolK(private val context: Context) {
 
     @Composable
     fun Dialog(any: Any?) {
-        val usedMemory = +state { "" }
-        val freeMemory = +state { "" }
+        val usedMemory = +state { getUsedMemory() }
+        val freeMemory = +state { getFreeMemory() }
         fun updateMemoryInfo() {
-            usedMemory.value = (runtime.totalMemory() - runtime.freeMemory()).bytesFormatted()
-            freeMemory.value = runtime.freeMemory().bytesFormatted()
+            usedMemory.value = getUsedMemory()
+            freeMemory.value = getFreeMemory()
         }
-        updateMemoryInfo()
         DebugComposable(
             context,
             MemoryInfo(usedMemory.value, freeMemory.value),
@@ -28,6 +27,10 @@ class DebugToolK(private val context: Context) {
             ::updateMemoryInfo
         )
     }
+
+    private fun getUsedMemory() = (runtime.totalMemory() - runtime.freeMemory()).bytesFormatted()
+
+    private fun getFreeMemory() = runtime.freeMemory().bytesFormatted()
 
     private fun Long.bytesFormatted() = Formatter.formatShortFileSize(context, this)
 }
