@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.Text
+import androidx.ui.core.dp
 import androidx.ui.core.setContent
 import androidx.ui.layout.Column
+import androidx.ui.layout.HeightSpacer
 import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
@@ -23,13 +25,20 @@ class MainActivity : AppCompatActivity() {
             val showDebugToolK = +state { false }
             MaterialTheme {
                 Column {
+                    HeightSpacer(48.dp)
                     Text(
-                        text = "Hello from MainActivity",
+                        text = "DebugToolK Sample App",
                         style = +themeTextStyle { h4 }
                     )
+                    HeightSpacer(48.dp)
                     Button(
                         text = "Show DebugToolK",
                         onClick = { showDebugToolK.value = true }
+                    )
+                    HeightSpacer(16.dp)
+                    Button(
+                        text = "Add random cache",
+                        onClick = { addCache() }
                     )
                     if (showDebugToolK.value) {
                         DebugToolK(
@@ -42,6 +51,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun addCache() {
+        cacheDir.createNewFile()
     }
 
 }
