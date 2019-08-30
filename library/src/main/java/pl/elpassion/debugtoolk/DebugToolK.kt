@@ -16,13 +16,10 @@ import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
-import androidx.ui.layout.Alignment
-import androidx.ui.layout.Column
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.Padding
-import androidx.ui.layout.VerticalScroller
+import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
@@ -55,6 +52,20 @@ private fun LogContainer(any: Any?) {
     Section(text = "Log")
     Divider()
     AnyLog(any)
+    Section(text = "Log2")
+    Divider()
+    Log2()
+}
+
+@Composable
+private fun Log2() {
+    for (line in getLogs()) SmallText(line)
+}
+
+private fun getLogs(): List<String> {
+    val process = runtime.exec("logcat -d")
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    return reader.readLines().takeLast(10)
 }
 
 @Composable

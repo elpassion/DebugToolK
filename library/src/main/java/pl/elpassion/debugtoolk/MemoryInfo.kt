@@ -16,7 +16,7 @@ import androidx.ui.layout.Alignment
 import androidx.ui.layout.Padding
 import androidx.ui.temputils.delay
 
-private val runtime = Runtime.getRuntime()
+val runtime = Runtime.getRuntime()
 
 @Composable
 fun MemoryInfoContainer(context: Context) {

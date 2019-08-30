@@ -33,4 +33,10 @@ fun BodyText(text: String) = Text(
 )
 
 @Composable
+fun SmallText(text: String) = Text(
+    text = text,
+    style = +themeTextStyle { overline }
+)
+
+@Composable
 fun Divider() = HeightSpacer(4.dp)
