@@ -37,6 +37,8 @@ fun DebugToolK(context: Context, log: Any?) = Dialog(onCloseRequest = {}) {
                     Divider()
                     StorageContainer()
                     Divider()
+                    NetworkContainer(context)
+                    Divider()
                     LogContainer(log)
                 }
             }

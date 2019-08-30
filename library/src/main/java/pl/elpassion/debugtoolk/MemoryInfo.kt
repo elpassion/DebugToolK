@@ -34,6 +34,7 @@ fun MemoryInfoContainer(context: Context) {
     MemoryInfoBody(usedMemory.value, freeMemory.value)
 }
 
+@Composable
 private fun MemoryInfoBody(usedMemory: String, freeMemory: String) {
     Align(Alignment.TopLeft) {
         Padding(4.dp) {
