@@ -26,14 +26,18 @@ class MainActivity : AppCompatActivity() {
                             text = "Hello from MainActivity",
                             style = +themeTextStyle { h4 })
                     }
-                    val c = List(3) { C(RandomString(), Random.nextInt(), Random.nextFloat()) }
-                    val b = List(2) { B(RandomString(), c) }
-                    val a = List(5) { A(RandomString(), RandomString(), b) }
-                    DebugComposable(this, a)
+                    DebugComposable(this, getLog())
                 }
             }
         }
     }
+
+}
+
+private fun getLog(): List<A> {
+    val c = List(3) { C(RandomString(), Random.nextInt(), Random.nextFloat()) }
+    val b = List(2) { B(RandomString(), c) }
+    return List(5) { A(RandomString(), RandomString(), b) }
 }
 
 private fun RandomString(): String {
