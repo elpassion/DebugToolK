@@ -8,11 +8,9 @@ import androidx.compose.Composable
 import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.core.graphics.ColorUtils
-import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.Dialog
-import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
@@ -22,14 +20,9 @@ import androidx.ui.layout.Align
 import androidx.ui.layout.Alignment
 import androidx.ui.layout.Column
 import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.HeightSpacer
-import androidx.ui.layout.MainAxisAlignment
 import androidx.ui.layout.Padding
-import androidx.ui.layout.Row
 import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialTheme
-import androidx.ui.material.themeTextStyle
-import androidx.ui.painting.imageFromResource
 import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
@@ -49,23 +42,6 @@ fun DebugComposable(
                     LogContainer(log)
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun Header(context: Context) = Row(mainAxisAlignment = MainAxisAlignment.Center) {
-    SimpleImage(imageFromResource(context.resources, R.drawable.ic_dev))
-    Text(text = "DebugToolK", style = +themeTextStyle { h6 })
-}
-
-@Composable
-private fun MemoryInfoContainer(memoryInfo: MemoryInfo) {
-    Section(text = "Memory Info")
-    Divider()
-    Align(Alignment.TopLeft) {
-        Padding(4.dp) {
-            BodyText("Used: ${memoryInfo.used}\nFree: ${memoryInfo.free}")
         }
     }
 }
@@ -118,18 +94,3 @@ private fun CollectionLog(collection: Collection<*>, depth: Int) = Padding(left 
         }
     }
 }
-
-@Composable
-private fun Section(text: String) = Text(
-    text = text,
-    style = +themeTextStyle { subtitle2 }
-)
-
-@Composable
-private fun BodyText(text: String) = Text(
-    text = text,
-    style = +themeTextStyle { body2 }
-)
-
-@Composable
-private fun Divider() = HeightSpacer(4.dp)
