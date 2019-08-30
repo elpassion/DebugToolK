@@ -36,8 +36,7 @@ import kotlin.reflect.full.declaredMemberProperties
 fun DebugComposable(
     context: Context,
     memoryInfo: MemoryInfo,
-    log: Any?,
-    onMemoryInfoClick: () -> Unit
+    log: Any?
 ) = Dialog(onCloseRequest = {}) {
     MaterialTheme {
         VerticalScroller {
@@ -45,7 +44,7 @@ fun DebugComposable(
                 Column {
                     Header(context)
                     Divider()
-                    MemoryInfoContainer(memoryInfo, onMemoryInfoClick)
+                    MemoryInfoContainer(memoryInfo)
                     Divider()
                     LogContainer(log)
                 }
@@ -61,14 +60,12 @@ private fun Header(context: Context) = Row(mainAxisAlignment = MainAxisAlignment
 }
 
 @Composable
-private fun MemoryInfoContainer(memoryInfo: MemoryInfo, onClick: () -> Unit) {
-    Clickable(onClick = onClick) {
-        Section(text = "Memory Info")
-        Divider()
-        Align(Alignment.TopLeft) {
-            Padding(4.dp) {
-                BodyText("Used: ${memoryInfo.used}\nFree: ${memoryInfo.free}")
-            }
+private fun MemoryInfoContainer(memoryInfo: MemoryInfo) {
+    Section(text = "Memory Info")
+    Divider()
+    Align(Alignment.TopLeft) {
+        Padding(4.dp) {
+            BodyText("Used: ${memoryInfo.used}\nFree: ${memoryInfo.free}")
         }
     }
 }
