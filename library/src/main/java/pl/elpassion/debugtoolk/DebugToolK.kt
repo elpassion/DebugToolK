@@ -35,6 +35,8 @@ fun DebugToolK(context: Context, log: Any?) = Dialog(onCloseRequest = {}) {
                     Divider()
                     MemoryInfoContainer(context)
                     Divider()
+                    StorageContainer()
+                    Divider()
                     LogContainer(log)
                 }
             }
