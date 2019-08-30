@@ -26,7 +26,11 @@ import androidx.ui.material.MaterialTheme
 import kotlin.reflect.full.declaredMemberProperties
 
 @Composable
-fun DebugToolK(context: Context, log: Any?) = Dialog(onCloseRequest = {}) {
+fun DebugToolK(
+    context: Context,
+    log: Any?,
+    onCloseRequest: () -> Unit
+) = Dialog(onCloseRequest = onCloseRequest) {
     MaterialTheme {
         VerticalScroller {
             Padding(8.dp) {

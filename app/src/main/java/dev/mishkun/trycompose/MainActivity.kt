@@ -4,11 +4,12 @@ package dev.mishkun.trycompose
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.Text
 import androidx.ui.core.setContent
 import androidx.ui.layout.Column
-import androidx.ui.layout.VerticalScroller
+import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.themeTextStyle
 import pl.elpassion.debugtoolk.DebugToolK
@@ -19,16 +20,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            VerticalScroller {
+            val showDebugToolK = +state { false }
+            MaterialTheme {
                 Column {
-                    MaterialTheme {
-                        Text(
-                            text = "Hello from MainActivity",
-                            style = +themeTextStyle { h4 })
+                    Text(
+                        text = "Hello from MainActivity",
+                        style = +themeTextStyle { h4 }
+                    )
+                    Button(
+                        text = "Show DebugToolK",
+                        onClick = { showDebugToolK.value = true }
+                    )
+                    if (showDebugToolK.value) {
+                        DebugToolK(
+                            context = this,
+                            log = getLog(),
+                            onCloseRequest = { showDebugToolK.value = false }
+                        )
                     }
-                    DebugToolK(this, getLog())
                 }
             }
+
         }
     }
 
