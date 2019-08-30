@@ -5,32 +5,31 @@ package pl.elpassion.debugtoolk
 import android.content.Context
 import android.text.format.Formatter
 import androidx.compose.Composable
-import androidx.compose.Model
+import androidx.compose.state
+import androidx.compose.unaryPlus
 
 class DebugToolK(private val context: Context) {
 
     private val runtime = Runtime.getRuntime()
-    private val memoryInfo = MemoryInfo()
-
-    init {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            while (isActive) {
-        memoryInfo.used = (runtime.totalMemory() - runtime.freeMemory()).bytesFormatted()
-        memoryInfo.free = runtime.freeMemory().bytesFormatted()
-//            }
-//        }
-    }
 
     @Composable
     fun Dialog(any: Any?) {
-        DebugComposable(context, memoryInfo, any)
+        val usedMemory = +state { "" }
+        val freeMemory = +state { "" }
+        fun updateMemoryInfo() {
+            usedMemory.value = (runtime.totalMemory() - runtime.freeMemory()).bytesFormatted()
+            freeMemory.value = runtime.freeMemory().bytesFormatted()
+        }
+        updateMemoryInfo()
+        DebugComposable(
+            context,
+            MemoryInfo(usedMemory.value, freeMemory.value),
+            any,
+            ::updateMemoryInfo
+        )
     }
 
     private fun Long.bytesFormatted() = Formatter.formatShortFileSize(context, this)
 }
 
-@Model
-class MemoryInfo {
-    var used: String = ""
-    var free: String = ""
-}
+data class MemoryInfo(val used: String, val free: String)

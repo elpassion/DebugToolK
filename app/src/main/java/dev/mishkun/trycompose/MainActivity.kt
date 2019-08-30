@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 private fun getLog(): List<A> {
     val c = List(3) { C(RandomString(), Random.nextInt(), Random.nextFloat()) }
     val b = List(2) { B(RandomString(), c) }
-    return List(5) { A(RandomString(), RandomString(), b) }
+    return List(Random.nextInt(2, 5)) { A(RandomString(), RandomString(), b) }
 }
 
 private fun RandomString(): String {
