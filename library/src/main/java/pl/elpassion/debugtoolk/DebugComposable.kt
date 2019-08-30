@@ -53,14 +53,16 @@ fun DebugComposable(context: Context, any: Any?) = Dialog(onCloseRequest = {}) {
 }
 
 @Composable
-private fun AnyLog(any: Any?, depth: Int = 0) = when (any) {
-    null -> TextLog("null")
-    is List<*> -> CollectionLog(any, depth)
-    is Number -> TextLog("number: $any")
-    is String -> TextLog("string: $any")
-    else -> {
-        val properties = any::class.declaredMemberProperties
-        AnyLog(properties.map { it.getter.call(any) }, depth)
+private fun AnyLog(any: Any?, depth: Int = 0) {
+    when (any) {
+        null -> TextLog("null")
+        is List<*> -> CollectionLog(any, depth)
+        is Number -> TextLog("number: $any")
+        is String -> TextLog("string: $any")
+        else -> {
+            val properties = any::class.declaredMemberProperties
+            AnyLog(properties.map { it.getter.call(any) }, depth)
+        }
     }
 }
 
