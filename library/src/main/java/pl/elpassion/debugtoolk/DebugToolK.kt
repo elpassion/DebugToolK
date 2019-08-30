@@ -16,7 +16,12 @@ import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.graphics.Color
-import androidx.ui.layout.*
+import androidx.ui.layout.Align
+import androidx.ui.layout.Alignment
+import androidx.ui.layout.Column
+import androidx.ui.layout.CrossAxisAlignment
+import androidx.ui.layout.Padding
+import androidx.ui.layout.VerticalScroller
 import androidx.ui.material.MaterialTheme
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -49,10 +54,10 @@ fun DebugToolK(
 
 @Composable
 private fun LogContainer(any: Any?) {
-    Section(text = "Log")
+    Section(text = "Any Data")
     Divider()
     AnyLog(any)
-    Section(text = "Log2")
+    Section(text = "Log")
     Divider()
     Log2()
 }
