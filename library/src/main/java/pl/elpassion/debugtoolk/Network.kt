@@ -38,6 +38,6 @@ fun NetworkContainer(context: Context) {
 @Composable
 private fun NetworkBody(status: String, info: String) {
     Align(Alignment.TopLeft) {
-        BodyText("Status: $status\nType: $info")
+        BodyText("Status: $status\n${if (info.isNotEmpty()) "Type: $info" else ""}")
     }
 }
