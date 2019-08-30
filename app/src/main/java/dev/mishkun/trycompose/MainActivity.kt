@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                     val c = List(3) { C(RandomString(), Random.nextInt(), Random.nextFloat()) }
                     val b = List(2) { B(RandomString(), c) }
                     val a = List(5) { A(RandomString(), RandomString(), b) }
-                    DebugComposable(a)
+                    DebugComposable(this, a)
                 }
             }
         }
